@@ -7,9 +7,6 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
 </head>
 <body style="text-align: center">
-<div>
-
-<div>
 <h1>Indkøbskurv:</h1>
 <table style="margin: auto">
   <thead>
@@ -48,25 +45,24 @@
   </tr>
 
 </table>
-<p>
-<form method="post" th:action="@{/cart/empty}">
-  <button type="submit">Tøm indkøbskurv</button>
-</form>
-</p>
+  <p>
+  <form method="post" th:action="@{/cart/empty}">
+    <button type="submit">Tøm indkøbskurv</button>
+  </form>
+  </p>
 
 <!-- Hvordan kan det være at der ikke er behov for ?name=, ?price=, ?quantity= ?
      Er det fordi vi ikke laver objektet i endpointet og sender det til 'form' fx. th.object="${cartItem}?"
      Og er det fordi man bruger '<from>' at -->
-<h1>Varer:</h1>
-<form method="post" th:action="@{/cart/add}">
-  <p><label>Navn:</label>
-    <input type="text" name="name" required/></p>
-  <p><label>Pris:</label>
-    <input type="number" name="price" min="0" step="0.01" required/></p>
-  <p><label>Antal:</label>
-    <input type="number" name="quantity" min="1" required/></p>
-  <button type="submit">Tilføj til indkøbskurv</button>
-</form>
-</div>
+  <h1>Varer:</h1>
+  <form method="post" th:action="@{/cart/add}">
+    <p><label>Navn:</label>
+      <input type="text" name="name" required/></p>
+    <p><label>Pris:</label>
+      <input type="number" name="price" min="0" step="0.01" required/></p>
+    <p><label>Antal:</label>
+      <input type="number" name="quantity" min="1" required/></p>
+    <button type="submit">Tilføj til indkøbskurv</button>
+  </form>
 </body>
 </html>
