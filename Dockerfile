@@ -1,35 +1,29 @@
 FROM eclipse-temurin:17-jdk-jammy
-
-ENV PORT=8080
-
+ENV PROFILE=${PROFILE:-docker-compose}
+ENV PORT=${PORT:-8080}
 COPY src /src
 COPY pom.xml /pom.xml
+COPY mvnw /mvnw
+COPY .mvn /.mvn
 RUN set -ex; \
-     mvn -f /pom.xml clean package; \
+     ./mvnw -f /pom.xml -Dspring.profiles.active=${PROFILE} clean package; \
+     mkdir /app || true; \
      mv /target/*.jar /app/; \
      rm -rf /target; \
      rm -rf /src; \
-     rm -rf /pom.xml;
+     rm -rf /pom.xml; \
+     rm -rf /mvnw; \
+     rm -rf /.mvn;
 
-EXPOSE $PORT
+EXPOSE ${PORT}
 
 CMD set -eux; \
-    java -jar /app/*.jar;
+    java -jar -Dspring.profiles.active=${PROFILE} /app/*.jar;
+
 
 # Build like this:
-# docker build  -t ShoppingCart .
+# docker build  -f Dockerfile.java -t java-app .
 
 # Run like this:
-# docker run -it --rm --name ShoppingCart --pid=host -p 8080:8080 -p 3306:3306 ShoppingCart
-#
-#   - `docker run`: This command is used to run a container from an image.
-#   - `-it`: This switch allocates a pseudo-TTY and opens an interactive terminal within the container.
-#   - `--rm`: This switch removes the container automatically after it exits. (useful for development, but it resets the database every time)
-#   - `--name superhero5`: This sets the name of the container to "superhero5".
-#   - `--pid=host`: This runs the container in the host's PID namespace. (enable this if you  want to debug the container with a debugger or if you want to be able to stop the container with CTRL-C)
-#   - `-p 8080:8080`: This maps port 8080 from the container to port 8080 on the host.
-#   - `-p 3306:3306`: This maps port 3306 from the container to port 3306 on the host.
-#   - `-e MYSQL_ROOT_PASSWORD=root`: This environment variable sets the root password for MySQL 'root' is default.
-#   - `superhero5`: This specifies the name of the image to run.
-
-
+# docker network create superhero || true
+# docker run -it --rm --name java-app -p 8080:8080 --network superhero java-app
