@@ -1,4 +1,4 @@
-FROM lakruzz/lamj:latest
+FROM eclipse-temurin:17-jdk-jammy
 
 ENV PORT=8080
 
@@ -14,7 +14,6 @@ RUN set -ex; \
 EXPOSE $PORT
 
 CMD set -eux; \
-    lamj.init.sh; \
     java -jar /app/*.jar;
 
 # Build like this:
